@@ -1,3 +1,4 @@
+
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const calendar = google.calendar("v3");
@@ -53,12 +54,14 @@ module.exports.getAuthURL = async () => {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
+      // "Access-Control-Allow-Credentials": true,
     },
     body: JSON.stringify({
       authUrl: authUrl,
     }),
   };
 };
+
 
 module.exports.getAccessToken = async (event) => {
   // The values used to instantiate the OAuthClient are at the top of the file
@@ -67,26 +70,15 @@ module.exports.getAccessToken = async (event) => {
       client_secret,
       redirect_uris[0]
     );
-    // Decode authorization code extracted from the URL query
+    // Get authorization code from the URL query
     const code = decodeURIComponent(`${event.pathParameters.code}`);
   
+  
     return new Promise((resolve, reject) => {
-      calendar.events.list(
-        {
-          calendarId: calendar_id,
-          auth: oAuth2Client,
-          timeMin: new Date().toISOString(),
-          singleEvents: true,
-          orderBy: "startTime",
-        },
-        (error, response) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(response);
-          }
-        }
-      );
+      /**
+       *  Exchange authorization code for access token with a “callback” after the exchange,
+       *  The callback in this case is an arrow function with the results as parameters: “err” and “token.”
+       */
   
       oAuth2Client.getToken(code, (err, token) => {
         if (err) {
@@ -97,9 +89,16 @@ module.exports.getAccessToken = async (event) => {
     })
       .then((token) => {
         // Respond with OAuth token
+        
         return {
           statusCode: 200,
-          body: JSON.stringify(token),
+          headers: {
+            // "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Credentials": true,
+            // "Access-Control-Allow-Methods": "OPTIONS, POST, GET"
+          },
+          body: JSON.stringify(token)
         };
       })
       .catch((err) => {
@@ -111,7 +110,7 @@ module.exports.getAccessToken = async (event) => {
         };
       });
   };
-  
+
   module.exports.getCalendarEvents = async (event) => {
     const oAuth2Client = new google.auth.OAuth2(
       client_id,
