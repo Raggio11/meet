@@ -80,10 +80,11 @@
         let code = codeValue.value;
 
         // if the authorization code is not URL-encoded, then URL-encode it.
+
         if (decodeURIComponent(code) === code) {
           code = encodeURIComponent(codeValue.value);
         }
-        const getTokenRequest = getToken + code;
+        const getTokenRequest = getToken +  "/" + code;
         fetch(getTokenRequest)
           .then(function (response) {
             return response.json();
@@ -108,7 +109,7 @@
           events.innerText = JSON.stringify(json, null, 2);
             });
         };
-        
+
     </script>
   </body>
 </html>
