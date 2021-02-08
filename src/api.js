@@ -12,11 +12,13 @@ import { mockData } from './mock-data';
 import { axios } from "axios";
 import NProgress from 'nprogress';
 
+
 export const extractLocations = (events) => {
     var extractLocations = events.map((event) => event.location);
     var locations = [...new Set(extractLocations)];
     return locations;
 };
+
 
 const checkToken = async (accessToken) => {
     const result = await fetch(
@@ -26,12 +28,6 @@ const checkToken = async (accessToken) => {
       .catch((error) => error.json());
   
     return result;
-  };
-
-export const getEvents = async () => {
-    if (window.location.href.startsWith('http://localhost')){
-        return mockDatal;
-    }
   };
 
   export const getEvents = async () => {
