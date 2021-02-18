@@ -17,4 +17,3 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 atatus.config('ff7c15c6d1454bacb579498f65cec784').install(); 
-atatus.notify(new Error('Test Atatus Setup'));
