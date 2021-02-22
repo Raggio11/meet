@@ -1,57 +1,63 @@
 import React, { Component } from 'react';
-import { InfoAlert } from "./Alert";
+import { InfoAlert } from './Alert';
 
 class CitySearch extends Component {
-    state = {
-        query: '',
+  state = {
+    query: '',
+    suggestions: [],
+    showSuggestions: false,
+  };
+
+  handleItemClicked = (suggestion) => {
+    this.setState({
+      query: suggestion,
+      showSuggestions: false,
+      infoText: '',
+    });
+
+    this.props.updateEvents(suggestion, 0);
+  };
+
+  handleInputChanged = (event) => {
+    const value = event.target.value;
+    const suggestions = this.props.locations.filter((location) => {
+      return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
+    });
+    if (suggestions.length === 0) {
+      this.setState({
+        query: value,
         suggestions: [],
-        showSuggestions: false,
-    }
-    handleInputChanged = (event) => {
-      const value = event.target.value;
-      const suggestions = this.props.locations.filter((location) => {
-        return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
+        infoText:
+          'We can not find the city you are looking for. Please try another city',
       });
-      if (suggestions.length === 0) {
-        this.setState({
-          query: value,
-          infoText:
-            "We can not find the city you are looking for. Please try another city",
-        });
-      } else {
-        return this.setState({
-          query: value,
-          suggestions,
-          infoText: "",
-        });
-      }
-    };
-    handleItemClicked = (suggestion) => {
-        this.setState({
-            query: suggestion,
-            showSuggestions: false
-        });
-        this.props.updateEvents(suggestion);
+    } else {
+      return this.setState({
+        query: value,
+        suggestions,
+        infoText: '',
+      });
     }
-    
-    render() {
-      return (
-        <div className="CitySearch">
-          <InfoAlert text={this.state.infoText} />
+  };
+
+  render() {
+    return (
+      <div className='CitySearch'>
           <h2 className="citysearch-instruction">Choose your closest city</h2>
-          <input
-            type="text"
-            className="city"
-            value={this.state.query}
-            onChange={this.handleInputChanged}
-            onFocus={() => {
-              this.setState({ showSuggestions: true });
-            }}
-            placeholder="Search for a City"
-          />
+          <InfoAlert text={this.state.infoText} />
+        <input
+          type='text'
+          className='city'
+          placeholder="Search for City"
+          value={this.state.query}
+          onChange={this.handleInputChanged}
+          onFocus={() => {
+            this.setState({ showSuggestions: true });
+          }}
+        />
+        {this.state.suggestions.length >= 1 ? (
           <ul
-            className="suggestions"
-            style={this.state.showSuggestions ? {} : { display: "none" }}
+            className='suggestions'
+            style={this.state.showSuggestions ? {} : { display: 'none' }}
           >
             {this.state.suggestions.map((suggestion) => (
               <li
@@ -61,13 +67,16 @@ class CitySearch extends Component {
                 {suggestion}
               </li>
             ))}
-            <li key="all" onClick={() => this.handleItemClicked("all")}>
+            <li onClick={() => this.handleItemClicked('all')}>
               <b>See all cities</b>
             </li>
           </ul>
-        </div>
-      );
-    }
+        ) : (
+          <InfoAlert text={this.state.infoText} />
+        )}
+      </div>
+    );
   }
-    
-    export default CitySearch;
+}
+
+export default CitySearch;
