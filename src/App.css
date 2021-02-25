@@ -29,7 +29,7 @@ input[type="number"] {
   padding: 8px 6px 8px 10px;
   border-radius: 4px;
   outline: none;
-  border: 1px solid #cc33ca;
+  border: 1px solid #ccc;
   font-size: 14px;
   line-height: 20px;
   align-self: center;
@@ -130,7 +130,8 @@ input[type="number"] {
 
 .Alert {
   position: fixed;
-  top: 20px;
+  /* margin-left: 35%;
+  margin-top: 45px; */
 }
 
 .data-vis-wrapper {
@@ -198,8 +199,6 @@ input[type="number"] {
   font-family: "Roboto";
 }
 
-
-
 @media only screen and (min-width: 992px) {
   .data-vis-wrapper {
     flex-direction: row;
@@ -211,5 +210,3 @@ input[type="number"] {
     margin: 0 auto;
   }
 }
-
-
