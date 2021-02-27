@@ -1,6 +1,10 @@
 ![image](https://user-images.githubusercontent.com/70227483/109359998-aa493b00-7843-11eb-99a2-4d698b723162.png)
 
+This meet application runs as a aws serverless app.  
 
+This Meet App is a serverless, progressive web application that uses the Google Calendar API to fetch upcoming events. The app is built with React using a test-driven development (TDD) approach. The serverless function is hosted by the cloud provider AWS.
+
+The app alows user to search for a city and get a list of events hosted in that city. The user can view charts that display how many events will take place in that city on upcoming days as well as view the popularity of event genres in the form of a pie chart.
 
 
 # Getting Started with Create React App
